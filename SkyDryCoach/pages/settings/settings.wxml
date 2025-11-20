@@ -1,0 +1,126 @@
+<!--pages/settings/settings.wxml-->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="header-content">
+      <text class="title">⚙️ 个性化设置</text>
+      <text class="subtitle">调整晾衣偏好和工作时间</text>
+    </view>
+  </view>
+
+  <!-- 偏好设置 -->
+  <view class="card">
+    <view class="section-title">
+      <text class="section-icon">⚖️</text>
+      <text class="section-text">晾衣偏好</text>
+    </view>
+    
+    <view class="slider-container">
+      <slider 
+        min="0" 
+        max="10" 
+        value="{{preferenceValue}}" 
+        show-value
+        bindchange="onPreferenceChange"
+        activeColor="#4facfe"
+      />
+      <view class="slider-labels">
+        <text class="slider-label">安全优先</text>
+        <text class="slider-label">速度优先</text>
+      </view>
+    </view>
+    
+    <view class="preference-info {{preferenceInfo.class}}">
+      <text class="info-icon">{{preferenceInfo.icon}}</text>
+      <text class="info-text">{{preferenceInfo.text}}</text>
+    </view>
+  </view>
+
+  <!-- 工作时间设置 -->
+  <view class="card">
+    <view class="section-title">
+      <text class="section-icon">⏰</text>
+      <text class="section-text">工作时间</text>
+    </view>
+    
+    <view class="time-settings">
+      <view class="time-item">
+        <text class="time-label">开始时间</text>
+        <picker 
+          mode="time" 
+          value="{{workStart}}" 
+          bindchange="onWorkStartChange"
+          class="time-picker"
+        >
+          <view class="time-display">{{workStart}}</view>
+        </picker>
+      </view>
+      
+      <view class="time-item">
+        <text class="time-label">结束时间</text>
+        <picker 
+          mode="time" 
+          value="{{workEnd}}" 
+          bindchange="onWorkEndChange"
+          class="time-picker"
+        >
+          <view class="time-display">{{workEnd}}</view>
+        </picker>
+      </view>
+    </view>
+    
+    <view class="time-tip">
+      <text>设置您通常不在家的时间段，系统会分析该时段的天气风险</text>
+    </view>
+  </view>
+
+  <!-- 位置管理 -->
+  <view class="card">
+    <view class="section-title">
+      <text class="section-icon">📍</text>
+      <text class="section-text">位置管理</text>
+    </view>
+    
+    <view class="location-info" wx:if="{{location}}">
+      <text class="location-address">{{location.address}}</text>
+      <text class="location-coords">纬度: {{location.lat.toFixed(4)}} 经度: {{location.lon.toFixed(4)}}</text>
+    </view>
+    
+    <button class="btn-outline" bindtap="updateLocation">
+      <text class="btn-icon">🔄</text>
+      <text>更新位置</text>
+    </button>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn-primary" bindtap="saveSettings">
+      <text class="btn-icon">💾</text>
+      <text>保存设置</text>
+    </button>
+    
+    <button class="btn-outline" bindtap="resetSettings">
+      <text class="btn-icon">🔄</text>
+      <text>恢复默认</text>
+    </button>
+    
+    <button class="btn-outline" bindtap="goBack">
+      <text class="btn-icon">⬅️</text>
+      <text>返回首页</text>
+    </button>
+  </view>
+
+  <!-- 关于信息 -->
+  <view class="card about-card">
+    <view class="section-title">
+      <text class="section-icon">ℹ️</text>
+      <text class="section-text">关于晾衣助手</text>
+    </view>
+    
+    <view class="about-content">
+      <text>版本: 1.0.0</text>
+      <text>数据来源: Open-Meteo天气API</text>
+      <text>算法: 基于温度、湿度、风速等多因素计算</text>
+    </view>
+  </view>
+</view>

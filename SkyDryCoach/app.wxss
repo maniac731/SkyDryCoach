@@ -1,0 +1,341 @@
+/**app.wxss**/
+page {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+  min-height: 100vh;
+  font-size: 28rpx; /* 基础字体大小 */
+}
+
+/* 全局文字大小定义 */
+.text-xs { font-size: 20rpx; }    /* 超小文字 */
+.text-sm { font-size: 24rpx; }    /* 小文字 */
+.text-base { font-size: 28rpx; }  /* 基础文字 */
+.text-lg { font-size: 32rpx; }    /* 大文字 */
+.text-xl { font-size: 36rpx; }    /* 超大文字 */
+.text-2xl { font-size: 40rpx; }   /* 2倍大文字 */
+.text-3xl { font-size: 48rpx; }   /* 3倍大文字 */
+
+/* 通用头部样式 */
+.header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20rpx);
+  padding: 60rpx 40rpx 40rpx;
+  border-radius: 0 0 40rpx 40rpx;
+}
+
+.header-content {
+  text-align: center;
+}
+
+.title {
+  display: block;
+  font-size: 52rpx; /* 从48rpx增大到52rpx */
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  display: block;
+  font-size: 30rpx; /* 从28rpx增大到30rpx */
+  color: #666;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 通用样式 */
+.card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  margin: 20rpx auto;
+  padding: 30rpx;
+  box-sizing: border-box;
+  width: calc(100% - 40rpx);
+  max-width: 750rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+  border: none;
+  border-radius: 50rpx;
+  color: white;
+  font-weight: 600;
+  padding: 25rpx 40rpx;
+  font-size: 32rpx; /* 从30rpx增大到32rpx */
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 4rpx solid #4facfe;
+  border-radius: 50rpx;
+  color: #4facfe;
+  font-weight: 600;
+  padding: 21rpx 40rpx;
+  font-size: 32rpx; /* 从30rpx增大到32rpx */
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* 加载动画 */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.loading-text {
+  margin-top: 30rpx;
+  color: #666;
+  font-size: 28rpx;
+}
+
+/* 指标卡片 */
+.metric-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20rpx 0;
+}
+
+.metric-item {
+  width: 48%;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.metric-value {
+  font-size: 40rpx; /* 从36rpx增大到40rpx */
+  font-weight: bold;
+  color: #333;
+  margin: 10rpx 0;
+}
+
+.metric-label {
+  font-size: 26rpx; /* 从24rpx增大到26rpx */
+  color: #666;
+}
+
+/* 进度条 */
+.progress-container {
+  width: 100%;
+  height: 16rpx;
+  background: #e9ecef;
+  border-radius: 8rpx;
+  overflow: hidden;
+  margin: 20rpx 0;
+}
+
+.progress-bar {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.progress-green {
+  background: #28a745;
+}
+
+.progress-orange {
+  background: #ffc107;
+}
+
+.progress-red {
+  background: #dc3545;
+}
+
+/* 日历视图 */
+.calendar-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx;
+  margin: 10rpx 0;
+  border-radius: 12rpx;
+  color: white;
+  font-weight: bold;
+}
+
+.calendar-green {
+  background: linear-gradient(45deg, #28a745, #20c997);
+}
+
+.calendar-orange {
+  background: linear-gradient(45deg, #ffc107, #fd7e14);
+}
+
+.calendar-red {
+  background: linear-gradient(45deg, #dc3545, #e83e8c);
+}
+
+/* 设置面板 */
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #eee;
+}
+
+.setting-label {
+  font-size: 34rpx; /* 从32rpx增大到34rpx */
+  color: #333;
+}
+
+.setting-value {
+  font-size: 30rpx; /* 从28rpx增大到30rpx */
+  color: #666;
+}
+
+/* 滑块样式 */
+.slider-container {
+  padding: 40rpx 0;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20rpx;
+}
+
+.slider-label {
+  font-size: 26rpx; /* 从24rpx增大到26rpx */
+  color: #666;
+}
+
+/* 时间选择器 */
+.time-picker {
+  display: flex;
+  gap: 20rpx;
+  margin: 20rpx 0;
+}
+
+.time-input {
+  flex: 1;
+  border: 2rpx solid #e9ecef;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  text-align: center;
+}
+
+/* 通用对齐样式 */
+.section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.section-icon {
+  font-size: 38rpx; /* 从36rpx增大到38rpx */
+  margin-right: 15rpx;
+}
+
+.section-text {
+  font-size: 34rpx; /* 从32rpx增大到34rpx */
+  font-weight: bold;
+  color: #333;
+}
+
+/* 图例样式 */
+.legend {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx; /* 从24rpx增大到26rpx */
+  color: #666;
+}
+
+.legend-color {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 4rpx;
+  margin-right: 10rpx;
+}
+
+.legend-color.green {
+  background: #28a745;
+}
+
+.legend-color.orange {
+  background: #ffc107;
+}
+
+.legend-color.red {
+  background: #dc3545;
+}
+
+/* 日历视图 */
+.calendar-view {
+  margin: 20rpx 0;
+}
+
+.calendar-info {
+  flex: 1;
+}
+
+.calendar-date {
+  display: block;
+  font-size: 30rpx; /* 从28rpx增大到30rpx */
+  font-weight: bold;
+  margin-bottom: 5rpx;
+}
+
+.calendar-recommendation {
+  display: block;
+  font-size: 26rpx; /* 从24rpx增大到26rpx */
+  opacity: 0.9;
+}
+
+.calendar-value {
+  text-align: right;
+}
+
+.btn-icon {
+  margin-right: 15rpx;
+  font-size: 34rpx; /* 从32rpx增大到34rpx */
+  flex-shrink: 0;
+}
+
+/* 响应式布局 */
+@media (max-width: 750rpx) {
+  .metric-item {
+    width: 100%;
+  }
+  
+  .time-picker {
+    flex-direction: column;
+  }
+  
+  .legend {
+    flex-direction: column;
+    gap: 10rpx;
+  }
+}

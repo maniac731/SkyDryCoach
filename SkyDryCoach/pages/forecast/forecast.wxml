@@ -1,0 +1,136 @@
+<!--pages/forecast/forecast.wxml-->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="header-content">
+      <text class="title">📅 5天预报</text>
+      <text class="subtitle">未来5天晾衣建议</text>
+    </view>
+  </view>
+
+  <!-- 日历视图 -->
+  <view class="card">
+    <view class="section-title">
+      <text class="section-icon">📊</text>
+      <text class="section-text">晾衣日历</text>
+    </view>
+    
+    <view class="calendar-view">
+      <view 
+        class="calendar-item {{item.color}}" 
+        wx:for="{{forecasts}}" 
+        wx:key="index"
+        bindtap="showForecastDetail"
+        data-index="{{index}}"
+      >
+        <view class="calendar-info">
+          <text class="calendar-date">{{item.dateDisplay}}</text>
+          <text class="calendar-recommendation">{{item.recommendation}}</text>
+        </view>
+        <view class="calendar-value">
+          <text class="drying-index">{{item.drying_index.toFixed(0)}}/100</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 图例 -->
+    <view class="legend">
+      <view class="legend-item">
+        <view class="legend-color green"></view>
+        <text class="legend-text">适合晾衣 (≥60)</text>
+      </view>
+      <view class="legend-item">
+        <view class="legend-color orange"></view>
+        <text class="legend-text">谨慎晾衣 (30-60)</text>
+      </view>
+      <view class="legend-item">
+        <view class="legend-color red"></view>
+        <text class="legend-text">不适合 (小于30)</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 详细预报 -->
+  <view class="card" wx:if="{{currentForecast}}">
+    <view class="section-title">
+      <text class="section-icon">📈</text>
+      <text class="section-text">{{currentForecast.dateDisplay}} 详细分析</text>
+    </view>
+    
+    <!-- 推荐状态 -->
+    <view class="recommendation {{currentForecast.color}}">
+      <text class="recommendation-text">{{currentForecast.recommendation}}</text>
+      <text class="drying-index">晾衣指数: {{currentForecast.drying_index.toFixed(0)}}/100</text>
+    </view>
+
+    <!-- 进度条 -->
+    <view class="progress-container">
+      <view class="progress-bar {{currentForecast.color}}" style="width: {{currentForecast.drying_index}};"></view>
+    </view>
+
+    <!-- 天气指标 -->
+    <view class="metric-grid">
+      <view class="metric-item">
+        <text class="metric-label">🌡️ 温度</text>
+        <text class="metric-value">{{currentForecast.avg_temp.toFixed(1)}}°C</text>
+        <text class="metric-range">{{currentForecast.min_temp.toFixed(0)}}°-{{currentForecast.max_temp.toFixed(0)}}°</text>
+      </view>
+      <view class="metric-item">
+        <text class="metric-label">💧 湿度</text>
+        <text class="metric-value">{{currentForecast.avg_humidity.toFixed(0)}}%</text>
+      </view>
+      <view class="metric-item">
+        <text class="metric-label">💨 风速</text>
+        <text class="metric-value">{{currentForecast.avg_wind.toFixed(1)}}km/h</text>
+      </view>
+      <view class="metric-item">
+        <text class="metric-label">☔ 降雨</text>
+        <text class="metric-value">{{currentForecast.rain_probability.toFixed(0)}}%</text>
+      </view>
+    </view>
+
+    <!-- 详细数据 -->
+    <view class="detail-section">
+      <view class="detail-item">
+        <text class="detail-label">云量覆盖</text>
+        <text class="detail-value">{{currentForecast.avg_cloud_cover.toFixed(0)}}%</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">饱和水汽压差</text>
+        <text class="detail-value">{{currentForecast.avg_vpd.toFixed(2)}} kPa</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">总降水量</text>
+        <text class="detail-value">{{currentForecast.total_precipitation.toFixed(1)}} mm</text>
+      </view>
+    </view>
+
+    <!-- 降雨提醒 -->
+    <view class="rain-alert" wx:if="{{currentForecast.rain_alert}}">
+      <text class="alert-icon">⚠️</text>
+      <text class="alert-text">工作时间预计有雨！请提前收衣服</text>
+    </view>
+
+    <!-- 工作时间分析 -->
+    <view class="work-hour-analysis" wx:if="{{currentForecast.work_hour_data.length > 0}}">
+      <text class="analysis-title">工作时间段分析</text>
+      <view class="analysis-content">
+        <text>• 温度范围: {{getWorkHourTempRange(currentForecast.work_hour_data)}}°C</text>
+        <text>• 湿度范围: {{getWorkHourHumidityRange(currentForecast.work_hour_data)}}%</text>
+        <text>• 最大降雨概率: {{getMaxRainProb(currentForecast.work_hour_data)}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn-primary" bindtap="exportReport">
+      <text class="btn-icon">📄</text>
+      <text>导出报告</text>
+    </button>
+    <button class="btn-outline" bindtap="goBack">
+      <text class="btn-icon">⬅️</text>
+      <text>返回首页</text>
+    </button>
+  </view>
+</view>

@@ -1,0 +1,140 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 头部 -->
+  <view class="detail-metrics" style="width: 589rpx; display: block; box-sizing: border-box; position: relative; left: 77rpx; top: 0rpx">
+    <view class="header-content">
+      <text class="title">👔 晾衣助手</text>
+      <text class="subtitle">智能天气晾衣建议</text>
+    </view>
+  </view>
+
+  <!-- 位置信息 -->
+  <view class="card" wx:if="{{location}}" style="width: 589rpx; display: flex; box-sizing: border-box">
+    <view class="location-info">
+      <text class="location-icon">📍</text>
+      <view class="location-details">
+        <text class="location-text">{{location.address}}</text>
+        <text class="location-coords">纬度: {{location.lat.toFixed(4)}} 经度: {{location.lon.toFixed(4)}}</text>
+      </view>
+    </view>
+    <view class="location-actions">
+      <button class="btn-small" bindtap="getLocation">刷新位置</button>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <view class="spinner"></view>
+    <text class="loading-text">正在获取天气数据...</text>
+  </view>
+
+  <!-- 错误信息 -->
+  <view class="error-card" wx:if="{{error}}">
+    <text class="error-icon">❌</text>
+    <text class="error-text">{{error}}</text>
+    <button class="btn-primary" bindtap="retryFetch">重试</button>
+  </view>
+
+  <!-- 今日建议 -->
+  <view class="card" wx:if="{{todayForecast && todayForecast.avg_temp !== undefined}}">
+    <view class="today-header">
+      <text class="today-title">今日晾衣建议</text>
+      <text class="today-date">{{todayForecast.dateDisplay}}</text>
+    </view>
+    
+    <view class="recommendation {{todayForecast.color}}">
+      <text class="recommendation-text">{{todayForecast.recommendation}}</text>
+      <text class="drying-index">晾衣指数: {{todayForecast.drying_index_display || '0'}}/100</text>
+    </view>
+
+    <!-- 进度条 -->
+    <view class="progress-container">
+      <view class="progress-bar {{todayForecast.color}}" style="width: {{todayForecast.drying_index}};"></view>
+    </view>
+
+    <!-- 指标网格 -->
+    <view class="metric-grid">
+      <view class="metric-item" style="width: 650rpx; display: block; box-sizing: border-box">
+        <text class="metric-label">🌡️ 温度</text>
+        <text class="metric-value">{{todayForecast.avg_temp_display || '--'}}°C</text>
+        
+      </view>
+      <view class="metric-item" style="width: 650rpx; display: block; box-sizing: border-box">
+        <text class="metric-label">💧 湿度</text>
+        <text class="metric-value">{{todayForecast.avg_humidity_display || '--'}}%</text>
+        <text class="metric-desc" wx:if="{{todayForecast.avg_humidity < 40}}">干燥</text>
+        <text class="metric-desc" wx:elif="{{todayForecast.avg_humidity < 70}}">舒适</text>
+        <text class="metric-desc" wx:else>潮湿</text>
+      </view>
+      <view class="metric-item" style="width: 650rpx; display: block; box-sizing: border-box">
+        <text class="metric-label">💨 风速</text>
+        <text class="metric-value">{{todayForecast.avg_wind_display || '--'}}km/h</text>
+        <text class="metric-desc" wx:if="{{todayForecast.avg_wind < 5}}">微风</text>
+        <text class="metric-desc" wx:elif="{{todayForecast.avg_wind < 15}}">和风</text>
+        <text class="metric-desc" wx:else>强风</text>
+      </view>
+      <view class="metric-item" style="width: 650rpx; display: block; box-sizing: border-box">
+        <text class="metric-label">☔ 降雨</text>
+        <text class="metric-value">{{todayForecast.rain_probability_display || '0'}}%</text>
+        <text class="metric-desc" wx:if="{{todayForecast.rain_probability < 30}}">无雨</text>
+        <text class="metric-desc" wx:elif="{{todayForecast.rain_probability < 60}}">可能</text>
+        <text class="metric-desc" wx:else>有雨</text>
+      </view>
+    </view>
+
+    <!-- 详细指标 -->
+    <view class="detail-metrics" wx:if="{{todayForecast}}">
+      <view class="detail-item">
+        <text class="detail-label">🌥️ 云量</text>
+        <text class="detail-value">{{todayForecast.avg_cloud_cover_display || '--'}}%</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">💦 总降雨</text>
+        <text class="detail-value">{{todayForecast.total_precipitation_display || '0.0'}}mm</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">🌬️ 干燥度</text>
+        <text class="detail-value">{{todayForecast.avg_vpd_display || '--'}}kPa</text>
+      </view>
+    </view>
+
+    <!-- 降雨提醒 -->
+    <view class="rain-alert" wx:if="{{todayForecast.rain_alert}}">
+      <text class="alert-icon">⚠️</text>
+      <text class="alert-text">工作时间预计有雨！请提前收衣服</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn-primary" bindtap="getLocation" style="width: 308rpx; display: flex; box-sizing: border-box; left: 0rpx; top: 6rpx; position: relative">
+      <text class="btn-icon">📍</text>
+      <text>获取位置</text>
+    </button>
+    
+    <button class="btn-primary" bindtap="fetchWeather" wx:if="{{location}}" style="width: 308rpx; display: flex; box-sizing: border-box; left: 2rpx; top: 2rpx; position: relative">
+      <text class="btn-icon">🌤️</text>
+      <text>获取天气</text>
+    </button>
+    
+    <button class="btn-outline" bindtap="goToForecast" wx:if="{{forecasts.length > 0}}" style="position: ; left: 0rpx; top: 2rpx">
+      <text class="btn-icon">📅</text>
+      <text>查看5天预报</text>
+    </button>
+    
+    <button class="btn-outline" bindtap="goToSettings" style="width: 308rpx; display: flex; box-sizing: border-box; left: 0rpx; top: 0rpx; height: 122rpx">
+      <text class="btn-icon">⚙️</text>
+      <text>个性化设置</text>
+    </button>
+  </view>
+
+  <!-- 小贴士 -->
+  <view class="card tips-card">
+    <text class="tips-title">💡 晾衣小贴士</text>
+    <view class="tips-content">
+      <text>• 🟢 指数≥60: 适合晾晒所有衣物</text>
+      <text>• 🟡 指数30-60: 适合快干衣物</text>
+      <text>• 🔴 指数小于30: 建议室内晾干</text>
+    </view>
+  </view>
+</view>
